@@ -24,39 +24,57 @@ namespace EmployeeManagement
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            // 1st middleware
-            app.Use(async (context, next) =>
-            {
-                logger.LogInformation("MW1: Request");
-                await next();
-                logger.LogInformation("MW1: Response");
-            });
+            //Serves default / index file 
+            //app.UseDefaultFiles();
 
-            // 2nd middleware
-            app.Use(async (context, next) =>
-            {
-                logger.LogInformation("MW2: Request");
-                await next();
-                logger.LogInformation("MW2: Response");
-            });
+            //To use another file as default
+            //DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
+            //defaultFilesOptions.DefaultFileNames.Clear();
+            //defaultFilesOptions.DefaultFileNames.Add("foo.html");
+            //app.UseDefaultFiles(defaultFilesOptions);
 
-            // 3rdmiddleware
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
+
             app.Run(async (context) =>
             {
-                //await context.Response.WriteAsync(System.Diagnostics.Process.GetCurrentProcess().ProcessName);
-                await context.Response.WriteAsync("MW3: Request and response handled" );
-                logger.LogInformation("MW3: Response");
+                await context.Response.WriteAsync("Hello World");               
             });
+
+            //// 1st middleware
+            //app.Use(async (context, next) =>
+            //{
+            //    logger.LogInformation("MW1: Request");
+            //    await next();
+            //    logger.LogInformation("MW1: Response");
+            //});
+
+            //// 2nd middleware
+            //app.Use(async (context, next) =>
+            //{
+            //    logger.LogInformation("MW2: Request");
+            //    await next();
+            //    logger.LogInformation("MW2: Response");
+            //});
+
+            ////3rdmiddleware
+            //app.Run(async (context) =>
+            //{
+            //    //await context.Response.WriteAsync(System.Diagnostics.Process.GetCurrentProcess().ProcessName);
+            //    await context.Response.WriteAsync("MW3: Request and response handled" );
+            //    logger.LogInformation("MW3: Response");
+            //});
         }
     }
 }
