@@ -27,7 +27,7 @@ namespace EmployeeManagement
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(
-                options => options.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection"))
+                options => options.UseSqlServer("Server=localhost,1433\\ Database=EmployeeDB; User=SA; Password=MyPassword123;")
             );
 
             services.AddMvc().AddXmlSerializerFormatters();
